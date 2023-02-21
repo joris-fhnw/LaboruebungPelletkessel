@@ -1,0 +1,9 @@
+numpy
+matplotlib
+CoolProp
+pandas
+tabulate
+openpyxl
+Cantera
+scipy
+PyQt5
