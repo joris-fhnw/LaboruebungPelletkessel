@@ -356,7 +356,7 @@ class Wood(object):
         return self.d / (self.b + self.c + self.d + (Lambda * self.e + self.f) + (Lambda - 1) * self.a)
 
     def N2(self, Lambda):
-        return ((Lambda * self.e + self.f) * a) / (
+        return (Lambda * self.e + self.f) / (
                     self.b + self.c + self.d + (Lambda * self.e + self.f) + (Lambda - 1) * self.a)
 
     def O2(self, Lambda):
