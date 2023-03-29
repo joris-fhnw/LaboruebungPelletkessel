@@ -11,7 +11,7 @@ matplotlib.use("Qt5Agg")
 yc, yh, yo, yn, ys = 0.51, 0.06, 0.43, 0, 0
 gamma = ["C", yc, "H", yh, "O", yo, "N", yn, "S", ys]
 w = 0.08  # [kg wasser/ kg holz nass]
-wood = wc.Wood("Holz",gamma,w)
+wood = wc.Wood("Holz",gamma,0)
 x = {"H2O": wood.H2O(1), "CO2": wood.CO2(1), "N2": wood.N2(1)}  # Molanteile des stöchiometrischen Abgases, Lambda = 1
 exhaus_stoech = ct.Solution("gri30.yaml")
 exhaus_stoech.TPX = 300,ct.one_atm,x
@@ -28,6 +28,7 @@ p_amb = 1.01325e5  # [Pa]
 
 # Initialisieren der Vektoren
 cp_vapor = np.zeros((lam.size, Temp_exhaust.size))
+cp_vapor_mean = np.zeros(Temp_exhaust.size)
 cp_air = np.zeros(Temp_exhaust.size)
 cp_exhaust = np.zeros(Temp_exhaust.size)
 cp_water = np.zeros(Temp_water.size)
@@ -44,6 +45,7 @@ p_vapor = x_h2o * p_amb  # [Pa] Partialdruck des Dampfes im Abgas (Auch abhängi
 for i, T in enumerate(Temp_exhaust):
     # Temperaturbereich hoch (am Ausgang des Kessels)
     for z in range(lam.size): cp_vapor[z, i] = PropsSI("C", "T", T, "P|gas", p_vapor[z], "Water")  # [J/(kg*K)]
+    cp_vapor_mean[i] = (cp_vapor[0, i]+cp_vapor[1,i])/2
     cp_air[i] = PropsSI("C", "T", T, "P", p_amb, "Air")  # [J/(kg*K)]
     exhaus_stoech.TP = T,p_amb
     cp_exhaust[i] = exhaus_stoech.cp_mass  # [kJ/(kg*K)] ergibt fast das gleiche, wie wenn mit CoolProp gerechnet wird:
@@ -72,9 +74,8 @@ plt.tight_layout()
 
 "CP Vapor"
 fig2 = plt.figure()
-for z in range(lam.size):
-    plt.plot(Temp_exhaust - 273, cp_vapor[z], color=color[z],
-                 label=f"cp Dampf, lambda: {lam[z]}")
+plt.plot(Temp_exhaust - 273, cp_vapor_mean, color="black",
+                 label=f"cp Dampf")
 plt.ylabel("Wärmekapazität [J/(kg*K]")
 plt.xlabel("Temperatur [°C]")
 plt.grid()
@@ -96,6 +97,7 @@ plt.tight_layout()
 fig4, axes2 = plt.subplots(2, 1)
 axes2[0].plot(Temp_comb_air - 273, density_air, color="black", label="Dichte Luft")
 axes2[0].set_ylabel("[kg/m3]")
+axes2[0].set_xlabel("Temperatur [°C]")
 axes2[0].legend()
 axes2[0].grid()
 
