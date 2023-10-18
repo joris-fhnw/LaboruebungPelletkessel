@@ -83,6 +83,16 @@ plt.legend()
 plt.tight_layout()
 # fig1.show()
 
+"CP Water"
+fig5 = plt.figure()
+plt.plot(Temp_water - 273, cp_water, color="black",
+                 label=f"cp Wasser")
+plt.ylabel("Wärmekapazität [J/(kg*K]")
+plt.xlabel("Temperatur [°C]")
+plt.grid()
+plt.legend()
+plt.tight_layout()
+
 "CP Air"
 fig3 = plt.figure()
 plt.plot(Temp_exhaust - 273, cp_air, color="black", label=f"cp Luft")
@@ -117,6 +127,7 @@ if save_fig:
     fig_formate = "png"
     fig_name1 = "cp Abgas stöchiometrisch" + "." + fig_formate
     fig_name2 = "cp Dampf" + "." + fig_formate
+    fig_name5 = "cp Wasser" + "." + fig_formate
     fig_name3 = "cp Luft" + "." + fig_formate
     fig_name4 = "Dichte Wasser und Luft" + "." + fig_formate
 
@@ -124,6 +135,7 @@ if save_fig:
     fig2.savefig(fig_name2, format=fig_formate)
     fig3.savefig(fig_name3, format=fig_formate)
     fig4.savefig(fig_name4, format=fig_formate)
+    fig5.savefig(fig_name5, format=fig_formate)
 
 "CP Water,Vapor and Air"
 # fig, axes = plt.subplots(3, 1)

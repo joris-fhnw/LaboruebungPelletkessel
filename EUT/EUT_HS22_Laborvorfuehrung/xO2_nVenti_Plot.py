@@ -1,6 +1,6 @@
 import numpy as np
 from matplotlib import pyplot as plt
-from Pelletkessel import wood_combustion as wc
+from functions_and_datacontainer import wood_combustion as wc
 from CoolProp import CoolProp as cp
 import matplotlib
 matplotlib.use("Qt5Agg") #qtagg
